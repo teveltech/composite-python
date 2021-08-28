@@ -1,0 +1,53 @@
+name: 'Python composite action'
+description: 'A composite action to handle building a python package'
+
+inputs:
+  new_tag:
+    required: true
+    description: 'The new tag to push'
+    
+outputs:
+  tag:
+    description: 'The tag of the new python package'
+    value: ${{ steps.pytag.outputs.python_tag }}
+    
+runs:
+    using: "composite"
+    steps:
+          
+      - name: Override version in setup.py
+        uses: teveltech/version-action@master
+        with:
+          new_version: ${{ inputs.new_tag }}
+
+      - name: Link pypi config directory and .pypirc to github home /github/home
+        shell: bash
+        run: ln -s /root/.pypirc $HOME/.pypirc && ln -s /root/.pip $HOME/.pip
+
+      - name: Install dependencies needed to upload
+        shell: bash
+        run: |
+          pip2 install setuptools wheel twine
+          pip3 install setuptools wheel twine
+          
+      - name: Install dependencies needed to build
+        shell: bash
+        run: |
+          if [ -f requirements.txt ]; then pip2 install -r requirements.txt; fi
+          if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
+          
+      - name: Build and publish
+        shell: bash
+        run: |
+          python2 setup.py bdist_wheel upload -r local
+          python3 setup.py bdist_wheel upload -r local
+          
+      - name: get python tag
+        id: pytag
+        shell: bash
+        run: |
+          cat ./*.egg-info/PKG-INFO | \
+          awk '/^Name:/ {printf $2"=="} /^Version:/ {print $2}'
+          echo "::set-output name=python_tag:: \
+          $(cat ./*.egg-info/PKG-INFO | \
+          awk '/^Name:/ {printf $2"=="} /^Version:/ {print $2}')"
