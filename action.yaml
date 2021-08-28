@@ -32,19 +32,16 @@ runs:
       - name: Install dependencies needed to upload
         shell: bash
         run: |
-          pip2 install setuptools wheel twine
           pip3 install setuptools wheel twine
           
       - name: Install dependencies needed to build
         shell: bash
         run: |
-          if [ -f requirements.txt ]; then pip2 install -r requirements.txt; fi
           if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
           
       - name: Build and publish
         shell: bash
         run: |
-          python2 setup.py bdist_wheel upload -r local
           python3 setup.py bdist_wheel upload -r local
           
       - name: get python tag
