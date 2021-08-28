@@ -5,6 +5,10 @@ inputs:
   new_tag:
     required: true
     description: 'The new tag to push'
+  package-file:
+    required: true
+    description: 'Path to setup.py'
+    default: './'
     
 outputs:
   tag:
@@ -19,7 +23,8 @@ runs:
         uses: teveltech/version-action@master
         with:
           new_version: ${{ inputs.new_tag }}
-
+          file_path: ${{ inputs.package-file }}
+          
       - name: Link pypi config directory and .pypirc to github home /github/home
         shell: bash
         run: ln -s /root/.pypirc $HOME/.pypirc && ln -s /root/.pip $HOME/.pip
