@@ -11,7 +11,7 @@ inputs:
     default: './'
     
 outputs:
-  tag:
+  package:
     description: 'The tag of the new python package'
     value: ${{ steps.pytag.outputs.python_tag }}
     
