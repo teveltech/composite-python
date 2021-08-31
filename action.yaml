@@ -2,10 +2,10 @@ name: 'Python composite action'
 description: 'A composite action to handle building a python package'
 
 inputs:
-  new_tag:
+  new-tag:
     required: true
     description: 'The new tag to push'
-  package-file:
+  package-folder:
     required: true
     description: 'Path to setup.py'
     default: './'
@@ -13,7 +13,7 @@ inputs:
 outputs:
   package:
     description: 'The tag of the new python package'
-    value: ${{ steps.pytag.outputs.python_tag }}
+    value: ${{ steps.echo_name.outputs.package-name }}
     
 runs:
     using: "composite"
@@ -22,8 +22,8 @@ runs:
       - name: Override version in setup.py
         uses: teveltech/version-action@master
         with:
-          new_version: ${{ inputs.new_tag }}
-          file_path: ${{ inputs.package-file }}
+          new_version: ${{ inputs.new-tag }}
+          file_path: ${{ inputs.package-folder }}
           
       - name: Link pypi config directory and .pypirc to github home /github/home
         shell: bash
@@ -39,24 +39,24 @@ runs:
         shell: bash
         run: |
           if [ -f requirements.txt ]; then pip2 install -r requirements.txt; fi
-          if [ -f ${{ inputs.package-file }}requirements.txt ]; then pip2 install -r ${{ inputs.package-file }}requirements.txt; fi
+          if [ -f ${{ inputs.package-folder }}requirements.txt ]; then pip2 install -r ${{ inputs.package-folder }}requirements.txt; fi
           if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
-          if [ -f ${{ inputs.package-file }}requirements.txt ]; then pip3 install -r ${{ inputs.package-file }}requirements.txt; fi
+          if [ -f ${{ inputs.package-folder }}requirements.txt ]; then pip3 install -r ${{ inputs.package-folder }}requirements.txt; fi
           
       - name: Build and publish
         shell: bash
-        working-directory: ${{ inputs.package-file }}
+        working-directory: ${{ inputs.package-folder }}
         run: |
           python2 setup.py bdist_wheel upload -r local
           python3 setup.py bdist_wheel upload -r local
           
       - name: get python tag
-        id: pytag
+        id: echo_name
         shell: bash
-        working-directory: ${{ inputs.package-file }}
+        working-directory: ${{ inputs.package-folder }}
         run: |
           cat ./*.egg-info/PKG-INFO | \
           awk '/^Name:/ {printf $2"=="} /^Version:/ {print $2}'
-          echo "::set-output name=python_tag:: \
+          echo "::set-output name=package-name:: \
           $(cat ./*.egg-info/PKG-INFO | \
           awk '/^Name:/ {printf $2"=="} /^Version:/ {print $2}')"
