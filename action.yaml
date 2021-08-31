@@ -53,6 +53,7 @@ runs:
       - name: get python tag
         id: pytag
         shell: bash
+        working-directory: ${{ inputs.package-file }}
         run: |
           cat ./*.egg-info/PKG-INFO | \
           awk '/^Name:/ {printf $2"=="} /^Version:/ {print $2}'
