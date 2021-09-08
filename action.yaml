@@ -42,7 +42,15 @@ runs:
           if [ -f ${{ inputs.package-folder }}requirements.txt ]; then pip2 install -r ${{ inputs.package-folder }}requirements.txt; fi
           if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
           if [ -f ${{ inputs.package-folder }}requirements.txt ]; then pip3 install -r ${{ inputs.package-folder }}requirements.txt; fi
-          
+      
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Build and publish
         shell: bash
         working-directory: ${{ inputs.package-folder }}
