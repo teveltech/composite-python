@@ -53,6 +53,6 @@ runs:
         run: |
           cat ./*.egg-info/PKG-INFO | \
           awk '/^Name:/ {printf $2"=="} /^Version:/ {print $2}'
-          echo "::set-output name=package-name:: \
+          echo "package-name= \
           $(cat ./*.egg-info/PKG-INFO | \
-          awk '/^Name:/ {printf $2"=="} /^Version:/ {print $2}')"
+          awk '/^Name:/ {printf $2"=="} /^Version:/ {print $2}')" >> $GITHUB_OUTPUT
