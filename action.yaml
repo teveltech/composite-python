@@ -61,6 +61,6 @@ runs:
         id: summary
         shell: bash
         run: |
-          echo '### Python package:' >> $GITHUB_STEP_SUMMARY
+          echo '##### Python package:' >> $GITHUB_STEP_SUMMARY
           echo '`${{steps.echo_name.outputs.package-name}}`' >> $GITHUB_STEP_SUMMARY
 
