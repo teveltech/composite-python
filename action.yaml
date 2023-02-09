@@ -20,7 +20,7 @@ runs:
     steps:
           
       - name: Override version in setup.py
-        uses: teveltech/version-action@master
+        uses: teveltech/version-action@set-output
         with:
           new_version: ${{ inputs.new-tag }}
           file_path: ${{ inputs.package-folder }}
@@ -53,6 +53,16 @@ runs:
         run: |
           cat ./*.egg-info/PKG-INFO | \
           awk '/^Name:/ {printf $2"=="} /^Version:/ {print $2}'
-          echo "::set-output name=package-name:: \
+          echo "package-name= \
           $(cat ./*.egg-info/PKG-INFO | \
-          awk '/^Name:/ {printf $2"=="} /^Version:/ {print $2}')"
+          awk '/^Name:/ {printf $2"=="} /^Version:/ {print $2}')" >> $GITHUB_OUTPUT
+
+      - name: Add to summary
+        id: summary
+        shell: bash
+        run: |
+          echo '##### Python package:' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo '${{steps.echo_name.outputs.package-name}}' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
