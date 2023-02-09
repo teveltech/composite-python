@@ -63,6 +63,6 @@ runs:
         run: |
           echo '##### Python package:' >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          echo '`${{steps.echo_name.outputs.package-name}}`' >> $GITHUB_STEP_SUMMARY
+          echo '${{steps.echo_name.outputs.package-name}}' >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
 
