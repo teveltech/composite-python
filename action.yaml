@@ -20,7 +20,7 @@ runs:
     steps:
           
       - name: Override version in setup.py
-        uses: teveltech/version-action@set-output
+        uses: teveltech/version-action@master
         with:
           new_version: ${{ inputs.new-tag }}
           file_path: ${{ inputs.package-folder }}
