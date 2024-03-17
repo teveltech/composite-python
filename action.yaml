@@ -34,11 +34,11 @@ runs:
         run: |
           pip3 install setuptools wheel twine
           
-      - name: Install dependencies needed to build
-        shell: bash
-        run: |
-          if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
-          if [ -f ${{ inputs.package-folder }}requirements.txt ]; then pip3 install -r ${{ inputs.package-folder }}requirements.txt; fi
+      # - name: Install dependencies needed to build
+      #   shell: bash
+      #   run: |
+      #     if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
+      #     if [ -f ${{ inputs.package-folder }}requirements.txt ]; then pip3 install -r ${{ inputs.package-folder }}requirements.txt; fi
           
       - name: Build and publish
         shell: bash
