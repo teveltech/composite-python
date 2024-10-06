@@ -27,7 +27,7 @@ runs:
           
       - name: Link pypi config directory and .pypirc to github home /github/home
         shell: bash
-        run: ln -s /root/.pypirc $HOME/.pypirc && ln -s /root/.pip $HOME/.pip
+        run: ln -sf /root/.pypirc $HOME/.pypirc && ln -sf /root/.pip $HOME/.pip
 
       - name: Install dependencies needed to upload
         shell: bash
