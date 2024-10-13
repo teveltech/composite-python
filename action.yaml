@@ -38,9 +38,15 @@ runs:
       - name: Install dependencies needed to build
         shell: bash
         run: |
-          if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
-          if [ -f ${{ inputs.package-folder }}requirements.txt ]; then pip3 install -r ${{ inputs.package-folder }}requirements.txt; fi
-          if [ -f requirements.client.txt ]; then pip3 install -r requirements.client.txt; fi
+          if [ -f requirements.client.txt ]; then 
+            pip3 install -r requirements.client.txt
+          elif [ -f "${{ inputs.package-folder }}requirements.txt" ]; then
+            pip3 install -r "${{ inputs.package-folder }}requirements.txt"
+          elif [ -f requirements.txt ]; then
+            pip3 install -r requirements.txt
+          else
+            echo "No requirements file found."
+          fi
       - name: Build and publish
         shell: bash
         working-directory: ${{ inputs.package-folder }}
