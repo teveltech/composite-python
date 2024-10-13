@@ -32,6 +32,7 @@ runs:
       - name: Install dependencies needed to upload
         shell: bash
         run: |
+          pip3 install --upgrade pip
           pip3 install setuptools wheel twine
           
       - name: Install dependencies needed to build
