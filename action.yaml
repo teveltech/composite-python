@@ -40,8 +40,12 @@ runs:
         run: |
           if [ -f requirements.client.txt ]; then 
             pip3 install -r requirements.client.txt
-          elif [ -f "${{ inputs.package-folder }}requirements.txt" ]; then
-            pip3 install -r "${{ inputs.package-folder }}requirements.txt"
+          else
+            if [ "${{ inputs.package-folder }}" != "./" ]; then
+              if [ -f "${{ inputs.package-folder }}requirements.txt" ]; then
+                pip3 install -r "${{ inputs.package-folder }}requirements.txt"
+              fi
+            fi
           # elif [ -f requirements.txt ]; then
             # pip3 install -r requirements.txt
           # else
