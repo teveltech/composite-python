@@ -42,10 +42,10 @@ runs:
             pip3 install -r requirements.client.txt
           elif [ -f "${{ inputs.package-folder }}requirements.txt" ]; then
             pip3 install -r "${{ inputs.package-folder }}requirements.txt"
-          elif [ -f requirements.txt ]; then
-            pip3 install -r requirements.txt
-          else
-            echo "No requirements file found."
+          # elif [ -f requirements.txt ]; then
+            # pip3 install -r requirements.txt
+          # else
+            # echo "No requirements file found."
           fi
       - name: Build and publish
         shell: bash
