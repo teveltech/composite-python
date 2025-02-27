@@ -57,7 +57,7 @@ runs:
         run: |
           python3 setup.py bdist_wheel
           pip3 install twine
-          twine upload --repository local
+          twine upload -r local dist/*
           
       - name: get python tag
         id: echo_name
