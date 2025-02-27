@@ -55,7 +55,9 @@ runs:
         shell: bash
         working-directory: ${{ inputs.package-folder }}
         run: |
-          python3 setup.py bdist_wheel upload -r local
+          python3 setup.py bdist_wheel
+          pip3 install twine
+          twine upload --repository local
           
       - name: get python tag
         id: echo_name
