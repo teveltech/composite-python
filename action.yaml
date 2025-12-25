@@ -24,7 +24,9 @@ runs:
         with:
           new_version: ${{ inputs.new-tag }}
           file_path: ${{ inputs.package-folder }}
-          
+      - name: setup.py
+        shell: bash
+        run: cat ${{inputs.package-folder}}/setup.py
       - name: Link pypi config directory and .pypirc to github home /github/home
         shell: bash
         run: ln -sf /root/.pypirc $HOME/.pypirc && ln -sf /root/.pip $HOME/.pip
